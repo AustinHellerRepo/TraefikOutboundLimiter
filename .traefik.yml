@@ -1,4 +1,4 @@
-displayName: Traefik Outbound Limiter
+displayName: Outbound Limiter
 type: middleware
 
 import: github.com/AustinHellerRepo/TraefikOutboundLimiter
@@ -6,5 +6,4 @@ import: github.com/AustinHellerRepo/TraefikOutboundLimiter
 summary: 'Limits the outbound dataflow to a specific number of bytes.'
 
 testData:
-  Headers:
-    Foo: Bar
+  resetingIncrementerApiUrl: "http://localhost:38160"
