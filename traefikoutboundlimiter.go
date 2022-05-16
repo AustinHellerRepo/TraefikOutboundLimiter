@@ -79,7 +79,7 @@ func (r *limiter) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 	}
 	defer resp.Body.Close()
 
-	statusCode := resp.Status
+	statusCode := resp.StatusCode
 
 	// react to a 409 error
 	if statusCode == 409 {
