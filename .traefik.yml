@@ -6,4 +6,5 @@ import: github.com/AustinHellerRepo/TraefikOutboundLimiter
 summary: 'Limits the outbound dataflow to a specific number of bytes.'
 
 testData:
+  lastModified: true
   resetingIncrementerApiUrl: "http://localhost:38160"
