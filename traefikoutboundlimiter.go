@@ -15,6 +15,7 @@ import (
 
 // Config holds the plugin configuration.
 type Config struct {
+	LastModified 			  bool		  `json:"lastModified,omitempty"`
 	ResetingIncrementerApiUrl string      `json:"resetingIncrementerApiUrl,omitempty"`
 }
 
@@ -26,6 +27,7 @@ func CreateConfig() *Config {
 type limiter struct {
 	name         				string
 	next         				http.Handler
+	lastModified				bool
 	resetingIncrementerApiUrl	string
 }
 
@@ -33,8 +35,9 @@ type limiter struct {
 func New(_ context.Context, next http.Handler, config *Config, name string) (http.Handler, error) {
 
 	return &limiter{
-		name:         name,
-		next:         next,
+		name:         			   name,
+		next:         			   next,
+		lastModified:			   config.LastModified,
 		resetingIncrementerApiUrl: config.ResetingIncrementerApiUrl,
 	}, nil
 }
