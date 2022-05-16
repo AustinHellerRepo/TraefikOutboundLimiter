@@ -81,13 +81,11 @@ func (r *limiter) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 	// react to a 409 error
 	if statusCode == 409 {
 		rw.WriteHeader(http.StatusConflict)
-	}
-	else {
+	} else {
 		if _, err := rw.Write(bodyBytes); err != nil {
 			log.Printf("unable to write rewrited body: %v", err)
 		}
 	}
-
 }
 
 type responseWriter struct {
