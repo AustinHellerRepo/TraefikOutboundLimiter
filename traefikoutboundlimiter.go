@@ -1,5 +1,5 @@
-// Package plugin_rewritebody a plugin to rewrite response body.
-package traefikoutboundlimiter
+// Package traefikoutboundlimiter, a plugin to restrict the outbound traffic if it goes over the limit of bytes.
+package TraefikOutboundLimiter
 
 import (
 	"bufio"
