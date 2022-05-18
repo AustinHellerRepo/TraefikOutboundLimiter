@@ -41,7 +41,7 @@ func New(_ context.Context, next http.Handler, config *Config, name string) (htt
 		next:         			   next,
 		lastModified:			   config.LastModified,
 		resetingIncrementerApiUrl: config.ResetingIncrementerApiUrl,
-		resetingIncrementerKey:    config.ResetingIncrementerKey
+		resetingIncrementerKey:    config.ResetingIncrementerKey,
 	}, nil
 }
 
