@@ -8,3 +8,4 @@ summary: 'Limits the outbound total output to a specific number of bytes. This r
 testData:
   lastModified: true
   resetingIncrementerApiUrl: "http://localhost:38160"
+  resetingIncrementerKey: "test"
