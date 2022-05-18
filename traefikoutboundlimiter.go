@@ -1,4 +1,4 @@
-// Package traefikoutboundlimiter, a plugin to restrict the outbound traffic if it goes over the limit of bytes.
+// Package TraefikOutboundLimiter, a plugin to restrict the outbound traffic if it goes over the limit of bytes.
 package TraefikOutboundLimiter
 
 import (
@@ -17,6 +17,7 @@ import (
 type Config struct {
 	LastModified 			  bool		  `json:"lastModified,omitempty"`
 	ResetingIncrementerApiUrl string      `json:"resetingIncrementerApiUrl,omitempty"`
+	ResetingIncrementerKey    string      `json:"resetingIncrementerKey,omitempty"`
 }
 
 // CreateConfig creates and initializes the plugin configuration.
@@ -29,6 +30,7 @@ type limiter struct {
 	next         				http.Handler
 	lastModified				bool
 	resetingIncrementerApiUrl	string
+	resetingIncrementerKey      string
 }
 
 // New creates and returns a new rewrite body plugin instance.
@@ -39,6 +41,7 @@ func New(_ context.Context, next http.Handler, config *Config, name string) (htt
 		next:         			   next,
 		lastModified:			   config.LastModified,
 		resetingIncrementerApiUrl: config.ResetingIncrementerApiUrl,
+		resetingIncrementerKey:    config.ResetingIncrementerKey
 	}, nil
 }
 
@@ -67,7 +70,7 @@ func (r *limiter) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 
 	// send the length to the reseting incrementer API
 	apiUrl := path.Join(r.resetingIncrementerApiUrl, "add")
-	requestJsonString := fmt.Sprintf(`{"key": "traefik_outbound_limiter", "value": "%d"`, bodyBytesLength)
+	requestJsonString := fmt.Sprintf(`{"key": "%d", "value": "%d"`, r.resetingIncrementerKey, bodyBytesLength)
 	requestJsonBytes := []byte(requestJsonString)
 	req, err := http.NewRequest("POST", apiUrl, bytes.NewBuffer(requestJsonBytes))
 	req.Header.Set("Content-Type", "application/json")
