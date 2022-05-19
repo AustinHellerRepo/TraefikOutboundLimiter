@@ -90,7 +90,7 @@ func (r *limiter) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 
 	log.Printf("joined apiUrl path: %s", apiUrl)
 
-	requestJsonString := fmt.Sprintf(`{"key": "%d", "value": "%d"`, r.resetingIncrementerKey, bodyBytesLength)
+	requestJsonString := fmt.Sprintf(`{"key": "%s", "value": "%d"`, r.resetingIncrementerKey, bodyBytesLength)
 
 	log.Printf("formatted request json string: %s", requestJsonString)
 
@@ -100,7 +100,12 @@ func (r *limiter) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 
 	req, err := http.NewRequest("POST", apiUrl, bytes.NewBuffer(requestJsonBytes))
 
-	log.Printf("sent request to resetingIncrementerApi")
+	if err != nil {
+		log.Printf("Error creating new request: %v", err)
+		panic(err)
+	}
+
+	log.Printf("created request for resetingIncrementerApi")
 
 	req.Header.Set("Content-Type", "application/json")
 
