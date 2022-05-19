@@ -88,11 +88,11 @@ func (r *limiter) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 
 	// send the length to the reseting incrementer API
 
-	u, err := url.Parse(r.resetingIncrementerApiUrl)
+	u, u_err := url.Parse(r.resetingIncrementerApiUrl)
 
-	if err != nil {
-		log.Printf("Error parsing api url: %v", err)
-		panic(err)
+	if u_err != nil {
+		log.Printf("Error parsing api url: %v", u_err)
+		panic(u_err)
 	}
 
 	log.Printf("Parsed url")
@@ -113,11 +113,11 @@ func (r *limiter) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 
 	log.Printf("created empty byte array")
 
-	req, err := http.NewRequest("POST", apiUrl, bytes.NewBuffer(requestJsonBytes))
+	req, r_err := http.NewRequest("POST", apiUrl, bytes.NewBuffer(requestJsonBytes))
 
-	if err != nil {
-		log.Printf("Error creating new request: %v", err)
-		panic(err)
+	if r_err != nil {
+		log.Printf("Error creating new request: %v", r_err)
+		panic(r_err)
 	}
 
 	log.Printf("created request for resetingIncrementerApi")
@@ -127,10 +127,10 @@ func (r *limiter) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 	log.Printf("set content type header")
 
 	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		log.Printf("Received error while attempting to send request to resetingIncrementerApi: %v", err)
-		panic(err)
+	resp, c_err := client.Do(req)
+	if c_err != nil {
+		log.Printf("Received error while attempting to send request to resetingIncrementerApi: %v", c_err)
+		panic(c_err)
 	}
 	defer resp.Body.Close()
 
