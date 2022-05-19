@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"regexp"
 	"path"
+	"url"
 )
 
 // Config holds the plugin configuration.
@@ -86,9 +87,23 @@ func (r *limiter) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 	log.Printf("determined number of bytes in body")
 
 	// send the length to the reseting incrementer API
-	apiUrl := path.Join(r.resetingIncrementerApiUrl, "add")
 
-	log.Printf("joined apiUrl path: %s", apiUrl)
+	u, err := url.Parse(r.resetingIncrementerApiUrl)
+
+	if err != nil {
+		log.Printf("Error parsing api url: %v", err)
+		panic(err)
+	}
+
+	log.Printf("Parsed url")
+
+	u.Path = path.Join(u.Path, "add")
+
+	log.Printf("Joined path within url")
+
+	apiUrl := u.String()
+
+	log.Printf("localized apiUrl path: %s", apiUrl)
 
 	requestJsonString := fmt.Sprintf(`{"key": "%s", "value": "%d"`, r.resetingIncrementerKey, bodyBytesLength)
 
