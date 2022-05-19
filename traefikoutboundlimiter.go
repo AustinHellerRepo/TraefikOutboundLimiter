@@ -91,7 +91,7 @@ func (r *limiter) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 
 	log.Printf("created apiUrl path: %s", apiUrl)
 
-	requestJsonString := fmt.Sprintf(`{"key": "%s", "value": "%d"`, r.resetingIncrementerKey, bodyBytesLength)
+	requestJsonString := fmt.Sprintf(`{"key": "%s", "value": "%d"}`, r.resetingIncrementerKey, bodyBytesLength)
 
 	log.Printf("formatted request json string: %s", requestJsonString)
 
