@@ -35,7 +35,7 @@ type limiter struct {
 
 // New creates and returns a new rewrite body plugin instance.
 func New(_ context.Context, next http.Handler, config *Config, name string) (http.Handler, error) {
-	reflect: call of reflect.Value.Field on zero Value
+	
 	return &limiter{
 		name:         			   name,
 		next:         			   next,
