@@ -15,9 +15,9 @@ import (
 
 // Config holds the plugin configuration.
 type Config struct {
-	LastModified 			  bool		  `json:"lastModified,omitempty"`
-	ResetingIncrementerApiUrl string      `json:"resetingIncrementerApiUrl,omitempty"`
-	ResetingIncrementerKey    string      `json:"resetingIncrementerKey,omitempty"`
+	LastModified 			  bool		`json:"lastModified,omitempty"`
+	ResetingIncrementerApiUrl string	`json:"resetingIncrementerApiUrl,omitempty"`
+	ResetingIncrementerKey    string	`json:"resetingIncrementerKey,omitempty"`
 }
 
 // CreateConfig creates and initializes the plugin configuration.
@@ -26,16 +26,16 @@ func CreateConfig() *Config {
 }
 
 type limiter struct {
-	name         				string
-	next         				http.Handler
-	lastModified				bool
-	resetingIncrementerApiUrl	string
-	resetingIncrementerKey      string
+	name         				string			`json:"name,omitempty"`
+	next         				http.Handler	`json:"handler,omitempty"`
+	lastModified				bool			`json:"lastModified,omitempty"`
+	resetingIncrementerApiUrl	string			`json:"resetingIncrementerApiUrl,omitempty"`
+	resetingIncrementerKey      string			`json:"resetingIncrementerKey,omitempty"`
 }
 
 // New creates and returns a new rewrite body plugin instance.
 func New(_ context.Context, next http.Handler, config *Config, name string) (http.Handler, error) {
-
+	reflect: call of reflect.Value.Field on zero Value
 	return &limiter{
 		name:         			   name,
 		next:         			   next,
@@ -46,14 +46,24 @@ func New(_ context.Context, next http.Handler, config *Config, name string) (htt
 }
 
 func (r *limiter) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
+
+	log.Printf("started ServeHTTP")
+	log.Printf("Limiter: %v", r)
+
 	wrappedWriter := &responseWriter{
 		lastModified:   r.lastModified,
 		ResponseWriter: rw,
 	}
 
+	log.Printf("wrapped writer")
+
 	r.next.ServeHTTP(wrappedWriter, req)
 
+	log.Printf("served HTTP request")
+
 	bodyBytes := wrappedWriter.buffer.Bytes()
+
+	log.Printf("localized buffer bytes")
 
 	contentEncoding := wrappedWriter.Header().Get("Content-Encoding")
 
