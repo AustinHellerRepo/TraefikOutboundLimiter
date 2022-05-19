@@ -67,7 +67,12 @@ func (r *limiter) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 
 	contentEncoding := wrappedWriter.Header().Get("Content-Encoding")
 
+	log.Printf("determined content encoding")
+
 	if contentEncoding != "" && contentEncoding != "identity" {
+
+		log.Printf("content encoding is special case")
+
 		if _, err := rw.Write(bodyBytes); err != nil {
 			log.Printf("unable to write body: %v", err)
 		}
@@ -78,30 +83,54 @@ func (r *limiter) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 	// get the length of the bytes
 	bodyBytesLength := len(bodyBytes)
 
+	log.Printf("determined number of bytes in body")
+
 	// send the length to the reseting incrementer API
 	apiUrl := path.Join(r.resetingIncrementerApiUrl, "add")
+
+	log.Printf("joined apiUrl path: %s", apiUrl)
+
 	requestJsonString := fmt.Sprintf(`{"key": "%d", "value": "%d"`, r.resetingIncrementerKey, bodyBytesLength)
+
+	log.Printf("formatted request json string: %s", requestJsonString)
+
 	requestJsonBytes := []byte(requestJsonString)
+
+	log.Printf("created empty byte array")
+
 	req, err := http.NewRequest("POST", apiUrl, bytes.NewBuffer(requestJsonBytes))
+
+	log.Printf("sent request to resetingIncrementerApi")
+
 	req.Header.Set("Content-Type", "application/json")
+
+	log.Printf("set content type header")
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
+		log.Printf("Received error while attempting to send request to resetingIncrementerApi: %v", err)
 		panic(err)
 	}
 	defer resp.Body.Close()
 
 	statusCode := resp.StatusCode
 
+	log.Printf("Localized status code from response: %d", statusCode)
+
 	// react to a 409 error
 	if statusCode == 409 {
+		log.Printf("Found status code 409")
 		rw.WriteHeader(http.StatusConflict)
+		log.Printf("Set header to StatusConflict")
 	} else {
+		log.Printf("Found other than 409")
 		if _, err := rw.Write(bodyBytes); err != nil {
 			log.Printf("unable to write rewrited body: %v", err)
 		}
 	}
+
+	log.Printf("Method completed")
 }
 
 type responseWriter struct {
