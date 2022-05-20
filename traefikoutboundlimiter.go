@@ -132,6 +132,8 @@ func (r *limiter) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 		log.Printf("Set header to StatusConflict")
 	} else if statusCode == 200 {
 		log.Printf("Found status code 200")
+		rw.WriteHeader(http.StatusOK)
+		log.Printf("Set header to 200")
 		if _, err := rw.Write(bodyBytes); err != nil {
 			log.Printf("unable to write rewrited body: %v", err)
 		}
@@ -146,7 +148,6 @@ func (r *limiter) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 type responseWriter struct {
 	buffer       bytes.Buffer
 	lastModified bool
-	wroteHeader  bool
 
 	http.ResponseWriter
 }
@@ -156,8 +157,6 @@ func (r *responseWriter) WriteHeader(statusCode int) {
 		r.ResponseWriter.Header().Del("Last-Modified")
 	}
 
-	r.wroteHeader = true
-
 	// Delegates the Content-Length Header creation to the final body write.
 	r.ResponseWriter.Header().Del("Content-Length")
 
@@ -165,10 +164,6 @@ func (r *responseWriter) WriteHeader(statusCode int) {
 }
 
 func (r *responseWriter) Write(p []byte) (int, error) {
-	if !r.wroteHeader {
-		r.WriteHeader(http.StatusOK)
-	}
-
 	return r.buffer.Write(p)
 }
 
