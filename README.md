@@ -59,3 +59,5 @@ It is necessary to have a [ResetingIncrementerApi](https://github.com/AustinHell
 
 - Setup such that it is accessible from Traefik services
 - Determine reset interval to establish monthly byte limit or "after X seconds" byte limit
+
+If you're having issues connecting to the ResetingIncrementerApi docker container, make sure that it's running in the same network. Try a "docker network inspect traefik_router_network" call in order to see that everything is available to each other and what the IP addresses are for the API.
