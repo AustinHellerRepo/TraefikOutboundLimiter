@@ -160,6 +160,8 @@ func (r *responseWriter) WriteHeader(statusCode int) {
 	// Delegates the Content-Length Header creation to the final body write.
 	r.ResponseWriter.Header().Del("Content-Length")
 
+	log.Printf("Writing header: %d", statusCode)
+
 	r.ResponseWriter.WriteHeader(statusCode)
 }
 
