@@ -6,6 +6,5 @@ import: github.com/AustinHellerRepo/TraefikOutboundLimiter
 summary: 'Limits the outbound total output to a specific number of bytes. This requires the use of a local API to maintain the current total: https://github.com/AustinHellerRepo/ResetingIncrementerApi.'
 
 testData:
-  lastModified: true
   resetingIncrementerApiUrl: "http://localhost:38160"
   resetingIncrementerKey: "test"
