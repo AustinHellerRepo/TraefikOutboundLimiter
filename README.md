@@ -7,6 +7,8 @@ This plugin requires the use of a local API that maintains the byte totals per r
 
 - Custom byte limit for each Traefik service
 - Custom total byte limit for all services, effectively limiting the byte output for all services
+- Resets the recorded outbound byte totals after a specific interval (number of seconds or after the Xth day of the month)
+- Returns 409 HTTP error code when limit is reached
 
 ## Usage
 
@@ -21,3 +23,6 @@ testData:
 ## ResetingIncrementerApi
 
 It is necessary to have a [ResetingIncrementerApi](https://github.com/AustinHellerRepo/ResetingIncrementerApi) docker container running such that it is accessible from the middleware.
+
+- Setup such that it is accessible from Traefik services
+- Determine reset interval to establish monthly byte limit or "after X seconds" byte limit
