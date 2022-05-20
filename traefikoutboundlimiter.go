@@ -16,7 +16,6 @@ import (
 
 // Config holds the plugin configuration.
 type Config struct {
-	LastModified 			  bool		`json:"lastModified,omitempty"`
 	ResetingIncrementerApiUrl string	`json:"resetingIncrementerApiUrl,omitempty"`
 	ResetingIncrementerKey    string	`json:"resetingIncrementerKey,omitempty"`
 }
@@ -29,7 +28,6 @@ func CreateConfig() *Config {
 type limiter struct {
 	name         				string			`json:"name,omitempty"`
 	next         				http.Handler	`json:"handler,omitempty"`
-	lastModified				bool			`json:"lastModified,omitempty"`
 	resetingIncrementerApiUrl	string			`json:"resetingIncrementerApiUrl,omitempty"`
 	resetingIncrementerKey      string			`json:"resetingIncrementerKey,omitempty"`
 }
@@ -40,7 +38,6 @@ func New(_ context.Context, next http.Handler, config *Config, name string) (htt
 	return &limiter{
 		name:         			   name,
 		next:         			   next,
-		lastModified:			   config.LastModified,
 		resetingIncrementerApiUrl: config.ResetingIncrementerApiUrl,
 		resetingIncrementerKey:    config.ResetingIncrementerKey,
 	}, nil
@@ -52,7 +49,6 @@ func (r *limiter) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 	log.Printf("Limiter: %v", r)
 
 	wrappedWriter := &responseWriter{
-		lastModified:   r.lastModified,
 		ResponseWriter: rw,
 	}
 
@@ -146,23 +142,17 @@ func (r *limiter) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 }
 
 type responseWriter struct {
-	buffer       bytes.Buffer
-	lastModified bool
+	buffer       		bytes.Buffer
+	statusCode			int
 
 	http.ResponseWriter
 }
 
 func (r *responseWriter) WriteHeader(statusCode int) {
-	if !r.lastModified {
-		r.ResponseWriter.Header().Del("Last-Modified")
-	}
 
-	// Delegates the Content-Length Header creation to the final body write.
-	r.ResponseWriter.Header().Del("Content-Length")
+	log.Printf("Saving header: %d", statusCode)
 
-	log.Printf("Writing header: %d", statusCode)
-
-	r.ResponseWriter.WriteHeader(statusCode)
+	r.statusCode = statusCode
 }
 
 func (r *responseWriter) Write(p []byte) (int, error) {
