@@ -139,7 +139,7 @@ func (r *limiter) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 		}
 	} else {
 		log.Printf("Found unexpected status code %d", statusCode)
-		panic(errors.New("Unexpected status code from ResetingIncrementerApi: %d", statusCode))
+		panic(errors.New(fmt.Sprintf("Unexpected status code from ResetingIncrementerApi: %d", statusCode)))
 	}
 
 	log.Printf("Method completed")
