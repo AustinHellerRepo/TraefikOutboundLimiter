@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"regexp"
 	"path"
+	"errors"
 )
 
 // Config holds the plugin configuration.
@@ -129,11 +130,14 @@ func (r *limiter) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 		log.Printf("Found status code 409")
 		rw.WriteHeader(http.StatusConflict)
 		log.Printf("Set header to StatusConflict")
-	} else {
-		log.Printf("Found other than 409")
+	} else if statusCode == 200 {
+		log.Printf("Found status code 200")
 		if _, err := rw.Write(bodyBytes); err != nil {
 			log.Printf("unable to write rewrited body: %v", err)
 		}
+	} else {
+		log.Printf("Found unexpected status code %d", statusCode)
+		panic(errors.New("Unexpected status code from ResetingIncrementerApi: %d", statusCode))
 	}
 
 	log.Printf("Method completed")
