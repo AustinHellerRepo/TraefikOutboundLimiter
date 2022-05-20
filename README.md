@@ -5,7 +5,7 @@ This plugin requires the use of a local API that maintains the byte totals per r
 
 ## Features
 
-- Custom byte limit for Traefik services
+- Custom byte limit for each Traefik service
 - Custom total byte limit for all services, effectively limiting the byte output for all services
 
 ## Usage
