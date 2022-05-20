@@ -15,7 +15,6 @@ This plugin requires the use of a local API that maintains the byte totals per r
 _Basic configuration_
 ```yml
 testData:
-  lastModified: true
   resetingIncrementerApiUrl: http://172.26.0.4:38160
   resetingIncrementerKey: the_service_name
 ```
@@ -37,7 +36,6 @@ services:
       - traefik.http.routers.my_api.rule=Host(`subdomain.domain.com`)
       - traefik.http.routers.my_api.entrypoints=web
       - traefik.http.routers.my_api.middlewares=my_middleware
-      - traefik.http.middlewares.my_middleware.plugin.traefikoutboundlimiter.lastModified=true
       - traefik.http.middlewares.my_middleware.plugin.traefikoutboundlimiter.resetingIncrementerApiUrl=http://172.26.0.4:38160
       - traefik.http.middlewares.my_middleware.plugin.traefikoutboundlimiter.resetingIncrementerKey=the_service_name
 networks:
