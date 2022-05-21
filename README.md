@@ -36,7 +36,7 @@ services:
       - traefik.http.routers.my_api.rule=Host(`subdomain.domain.com`)
       - traefik.http.routers.my_api.entrypoints=web
       - traefik.http.routers.my_api.middlewares=my_middleware
-      - traefik.http.middlewares.my_middleware.plugin.traefikoutboundlimiter.resetingIncrementerApiUrl=http://172.26.0.4:38160
+      - traefik.http.middlewares.my_middleware.plugin.traefikoutboundlimiter.resetingIncrementerApiUrl=http://resetingincrementerapi-web-1:38160
       - traefik.http.middlewares.my_middleware.plugin.traefikoutboundlimiter.resetingIncrementerKey=the_service_name
 networks:
   default:
