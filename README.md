@@ -68,6 +68,6 @@ Steps:
 - Update the ResetingIncrementerApi setting.ini file to contain a new key limit for the new service
 - Set the new service's resetingIncrementerKey label value to that same key
 - Restart the ResetingIncrementerApi docker container
--- This is why it is essential to have a mounted volume setup for the "data" directory
--- Restarting this container is the only source of downtime for existing services
+  - This is why it is essential to have a mounted volume setup for the "data" directory
+  - Restarting this container is the only source of downtime for existing services
 - Start the new service at your convenience
