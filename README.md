@@ -43,7 +43,9 @@ networks:
     name: traefik_router_network
     external: true
 ```
-The key "the_service_name" will need to be one of the keys specified in the running ResetingIncrementerApi settings.ini file.
+Important:
+- The url "http://resetingincrementerapi-web-1" is the default container name when starting the docker-compose.yml from the ResetingIncrementerApi project.
+- The key "the_service_name" will need to be one of the keys specified in the running ResetingIncrementerApi settings.ini file.
 
 _Starting docker container_
 ```sh
