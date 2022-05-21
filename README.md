@@ -43,6 +43,7 @@ networks:
     name: traefik_router_network
     external: true
 ```
+The key "the_service_name" will need to be one of the keys specified in the running ResetingIncrementerApi settings.ini file.
 
 _Starting docker container_
 ```sh
