@@ -69,6 +69,7 @@ Steps:
 ```yml
 [KeyLimits]
 new_service = 123
+; the new_service can output 123 bytes before being restricted
 ```
 - Set the new service's resetingIncrementerKey label value to that same key
 ```yml
