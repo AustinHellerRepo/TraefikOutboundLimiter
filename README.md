@@ -61,7 +61,7 @@ It is necessary to have a [ResetingIncrementerApi](https://github.com/AustinHell
 - Setup such that it is accessible from Traefik services
   - This generally can be solved by having the ResetingIncrementerApi in the same docker network as your services
 - Determine reset interval to establish monthly byte limit or "after X seconds" byte limit
-```yml
+```ini
 [Timing]
 Interval = day_of_month
 Value = 1
@@ -72,7 +72,7 @@ If you're having issues connecting to the ResetingIncrementerApi docker containe
 ## Adding New Service
 Steps:
 - Update the ResetingIncrementerApi setting.ini file to contain a new key limit for the new service
-```yml
+```ini
 [KeyLimits]
 new_service = 123
 ; the new_service can output 123 bytes before being restricted
