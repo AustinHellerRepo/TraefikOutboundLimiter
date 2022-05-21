@@ -66,7 +66,16 @@ If you're having issues connecting to the ResetingIncrementerApi docker containe
 ## Adding New Service
 Steps:
 - Update the ResetingIncrementerApi setting.ini file to contain a new key limit for the new service
+```yml
+[KeyLimits]
+new_service = 123
+```
 - Set the new service's resetingIncrementerKey label value to that same key
+```yml
+labels:
+  - traefik.http.middlewares.my_middleware.plugin.traefikoutboundlimiter.resetingIncrementerApiUrl=http://resetingincrementerapi-web-1:38160
+  - traefik.http.middlewares.my_middleware.plugin.traefikoutboundlimiter.resetingIncrementerKey=new_service
+```
 - Restart the ResetingIncrementerApi docker container
   - This is why it is essential to have a mounted volume setup for the "data" directory
   - Restarting this container is the only source of downtime for existing services
