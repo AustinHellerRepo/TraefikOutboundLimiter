@@ -59,7 +59,13 @@ docker-compose up -d
 It is necessary to have a [ResetingIncrementerApi](https://github.com/AustinHellerRepo/ResetingIncrementerApi) docker container running such that it is accessible from the middleware.
 
 - Setup such that it is accessible from Traefik services
+  - This generally can be solved by having the ResetingIncrementerApi in the same docker network as your services
 - Determine reset interval to establish monthly byte limit or "after X seconds" byte limit
+```yml
+[Timing]
+Interval = day_of_month
+Value = 1
+```
 
 If you're having issues connecting to the ResetingIncrementerApi docker container, make sure that it's running in the same network. Try a "docker network inspect traefik_router_network" call in order to see that everything is available to each other and what the IP address is for the API.
 
