@@ -62,3 +62,12 @@ It is necessary to have a [ResetingIncrementerApi](https://github.com/AustinHell
 - Determine reset interval to establish monthly byte limit or "after X seconds" byte limit
 
 If you're having issues connecting to the ResetingIncrementerApi docker container, make sure that it's running in the same network. Try a "docker network inspect traefik_router_network" call in order to see that everything is available to each other and what the IP address is for the API.
+
+## Adding New Service
+Steps:
+- Update the ResetingIncrementerApi setting.ini file to contain a new key limit for the new service
+- Set the new service's resetingIncrementerKey label value to that same key
+- Restart the ResetingIncrementerApi docker container
+-- This is why it is essential to have a mounted volume setup for the "data" directory
+-- Restarting this container is the only source of downtime for existing services
+- Start the new service at your convenience
