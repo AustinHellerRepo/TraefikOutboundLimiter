@@ -128,8 +128,8 @@ func (r *limiter) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 		log.Printf("Set header to StatusConflict")
 	} else if statusCode == 200 {
 		log.Printf("Found status code 200")
-		rw.WriteHeader(http.StatusOK)
-		log.Printf("Set header to 200")
+		rw.WriteHeader(wrappedWriter.statusCode)
+		log.Printf("Set header to the same status code as the original response")
 		if _, err := rw.Write(bodyBytes); err != nil {
 			log.Printf("unable to write rewrited body: %v", err)
 		}
